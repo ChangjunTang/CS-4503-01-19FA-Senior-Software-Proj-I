@@ -1,0 +1,31 @@
+{
+  "name": "password-manager",
+  "version": "1.0.0",
+  "description": "A web-based password manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChangjunTang/CS-4503-01-19FA-Senior-Software-Proj-I.git"
+  },
+  "keywords": [
+    "password",
+    "manager"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChangjunTang/CS-4503-01-19FA-Senior-Software-Proj-I/issues"
+  },
+  "homepage": "https://github.com/ChangjunTang/CS-4503-01-19FA-Senior-Software-Proj-I#readme",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.0",
+    "nodemon": "^1.19.2"
+  }
+}
