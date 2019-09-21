@@ -23,7 +23,8 @@
   "homepage": "https://github.com/ChangjunTang/CS-4503-01-19FA-Senior-Software-Proj-I#readme",
   "dependencies": {
     "debug": "^4.1.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-session": "^1.16.2"
   },
   "devDependencies": {
     "cross-env": "^6.0.0",
