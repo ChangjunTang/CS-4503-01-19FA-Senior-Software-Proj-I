@@ -18,21 +18,6 @@ firebase.initializeApp(config);
 // save the firebase database to a variable
 var database = firebase.database();
 
-/*
-​
-firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
-    // Success
-})
-.catch(function(error) {
-    // Failed
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // ...
-});
-​
-*/
-
 
 // Logs all requests to the console
 app.use(function (req, res, next) {
@@ -48,6 +33,7 @@ app.use(session({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('static'));
 
+
 app.get('/', function (req, res) {
     if (req.session.loggedin) {
         res.send(`Welcome back ${req.session.username}`);
@@ -60,6 +46,11 @@ app.get('/', function (req, res) {
 app.get('/login', function (req, res) {
     res.sendFile(`${__dirname}/views/signIn.html`);
 });
+
+app.get('/signup', function (req, res) {
+    res.sendFile(`${__dirname}/views/signUp.html`);
+});
+
 
 app.post('/login', function (req, res) {
     const username = req.body.username;
@@ -76,6 +67,41 @@ app.post('/login', function (req, res) {
 		res.send('Incorrect username and/or password!');
 	});
 
+});
+
+app.post('/signup', function (req, res) {
+    const new_username = req.body.username;
+    const new_password = req.body.password;
+	const new_password2 = req.body.password2;
+
+	if(new_password == new_password2){
+		firebase.auth().createUserWithEmailAndPassword(new_username, new_password).then(function(){
+			// Success
+			res.send('New account created :) Please login');
+			//res.sendFile(`${__dirname}/views/signIn.html`);
+		})
+		.catch(function(error) {
+			// Failed
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			
+			if (errorCode == 'auth/email-already-in-use') {
+				res.send('An account already exists for this email.');
+			}
+			else if (errorCode == 'auth/invalid-email') {
+				res.send('Invalid email!');
+			}
+			else if (errorCode == 'auth/weak-password') {
+				res.send('Weak password!');
+			}
+			else{
+				res.send('AHHHH SOMETHING WENT WRONG!!');
+			}	
+		});
+	}
+	else{
+		res.send('Passwords do not match!');
+	}
 });
 
 app.listen(port, function () {
