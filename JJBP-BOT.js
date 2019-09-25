@@ -4,8 +4,18 @@ var modal = document.getElementById('id01');
 var mainText = document.getElementById("mainText");
 var submitBtn = document.getElementById("submitBtn");
 function submitClick(){
-	window.alert("working");
+	var firebaseRef = firebase,database().ref();
+	firebaseRef.child("text").set("Some Value");
 }
+
+function writeUserData() {
+  firebase.database().ref('users/' + userId).set({
+    username: "nametest",
+    email: "emailtest",
+    profile_picture : "imageUrltest"
+  });
+}
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == modal) {
@@ -13,14 +23,18 @@ window.onclick = function(event) {
     }
 }
 
-var config = {
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
     apiKey: "AIzaSyDcPUV7GN5aLzWnUrst7-pU0WHNxta0Qbs",
+    authDomain: "jjbp-bot.firebaseapp.com",
     databaseURL: "https://jjbp-bot.firebaseio.com",
+    projectId: "jjbp-bot",
     storageBucket: "jjbp-bot.appspot.com",
-};
-// initialize the firebase app
-var firebase = require("firebase");
-firebase.initializeApp(config);
+    messagingSenderId: "757073654109",
+    appId: "1:757073654109:web:1af6e9f01e54a8042138b4"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
 // save the firebase database to a variable
 var database = firebase.database();
 
