@@ -15,8 +15,6 @@ This is a private team repository for CS-4503-01(19FA) Senior Software Proj I
 
 5. Run `npm install` from the cloned directory
 
-6. Run 'npm install --save firebase' 
-
 ## Run Instructions
 
 7. Run `npm run dev` to actually start the server
