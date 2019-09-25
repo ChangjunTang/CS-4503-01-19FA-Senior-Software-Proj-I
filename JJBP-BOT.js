@@ -16,7 +16,11 @@ var config = {
     storageBucket: "jjbp-bot.appspot.com",
     messagingSenderId: "757073654109"
 };
+// initialize the firebase app
+var firebase = require("firebase");
 firebase.initializeApp(config);
+// save the firebase database to a variable
+var database = firebase.database();
 
 /**
  * Handles the sign in button press.
