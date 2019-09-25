@@ -24,7 +24,8 @@
   "dependencies": {
     "debug": "^4.1.1",
     "express": "^4.17.1",
-    "express-session": "^1.16.2"
+    "express-session": "^1.16.2",
+    "firebase": "^6.6.2"
   },
   "devDependencies": {
     "cross-env": "^6.0.0",
