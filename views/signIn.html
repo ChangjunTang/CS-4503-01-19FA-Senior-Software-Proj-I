@@ -86,5 +86,11 @@
       </div>
     </div>
   </div>
+	<script>
+		const urlParams = new URLSearchParams(window.location.search);
+		if(urlParams.get('error') == 'incorrect_user') {
+			document.querySelector('#alert_placeholder').innerHTML = 'Incorrect username and/or password';
+		}
+  	</script>
   </body>
 </html>
