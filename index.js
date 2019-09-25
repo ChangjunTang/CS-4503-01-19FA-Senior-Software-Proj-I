@@ -65,21 +65,17 @@ app.post('/login', function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-	if (username && password) {
-        firebase.auth().signInWithEmailAndPassword(username, password).then(function(){
-            //Success
-            req.session.loggedin = true;
-            req.session.username = username;
-            res.redirect('/');
-        })
-        .catch(function() {
-            //Failed
-            res.send('Incorrect username and/or password!');
-        });
-    }
-    else {
-        res.send('Please enter a username and password!');
-    }
+	firebase.auth().signInWithEmailAndPassword(username, password).then(function(){
+		//Success
+		req.session.loggedin = true;
+		req.session.username = username;
+		res.redirect('/');
+	})
+	.catch(function() {
+		//Failed
+		res.send('Incorrect username and/or password!');
+	});
+
 });
 
 app.listen(port, function () {
