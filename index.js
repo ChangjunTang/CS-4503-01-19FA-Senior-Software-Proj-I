@@ -18,6 +18,22 @@ firebase.initializeApp(config);
 // save the firebase database to a variable
 var database = firebase.database();
 
+/*
+​
+firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+    // Success
+})
+.catch(function(error) {
+    // Failed
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ...
+});
+​
+*/
+
+
 // Logs all requests to the console
 app.use(function (req, res, next) {
     log(`${req.ip} ${req.method} ${req.originalUrl}`);
@@ -42,24 +58,24 @@ app.get('/', function (req, res) {
 });
 
 app.get('/login', function (req, res) {
-    res.sendFile(`${__dirname}/views/login.html`);
+    res.sendFile(`${__dirname}/views/signIn.html`);
 });
 
 app.post('/login', function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    if (username && password) {
-        // This would be a database query...
-        if (username == 'John' && password == 'password') {
+	if (username && password) {
+        firebase.auth().signInWithEmailAndPassword(username, password).then(function(){
+            //Success
             req.session.loggedin = true;
             req.session.username = username;
-
             res.redirect('/');
-        }
-        else {
+        })
+        .catch(function() {
+            //Failed
             res.send('Incorrect username and/or password!');
-        }
+        });
     }
     else {
         res.send('Please enter a username and password!');
