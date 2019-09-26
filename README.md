@@ -9,16 +9,16 @@ This is a private team repository for CS-4503-01(19FA) Senior Software Proj I
 
     * You may still have to install git from [here](https://git-scm.com/downloads). I don't remember
 
-4. Clone [this](https://github.com/ChangjunTang/CS-4503-01-19FA-Senior-Software-Proj-I) git repo
+3. Clone [this](https://github.com/ChangjunTang/CS-4503-01-19FA-Senior-Software-Proj-I) git repo
 
     * You can clone the repo from the terminal by running `git clone https://github.com/ChangjunTang/CS-4503-01-19FA-Senior-Software-Proj-I.git`
 
-5. Run `npm install` from the cloned directory
+4. Run `npm install` from the cloned directory
 
-6. Run 'npm install --save firebase' 
+5. Run 'npm install --save firebase' 
 
 ## Run Instructions
 
-7. Run `npm run dev` to actually start the server
+6. Run `npm run dev` to actually start the server
 
-8. Open browser and go to http://localhost:3000/login
+7. Open browser and go to http://localhost:3000/login
