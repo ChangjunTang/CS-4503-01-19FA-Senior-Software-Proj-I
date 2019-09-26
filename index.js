@@ -64,7 +64,6 @@ app.post('/login', function (req, res) {
     })
         .catch(function () {
             //Failed
-            // res.send('Incorrect username and/or password!');
             res.redirect('/login?error=incorrect_user');
         });
 
@@ -78,8 +77,7 @@ app.post('/signup', function (req, res) {
     if (new_password == new_password2) {
         firebase.auth().createUserWithEmailAndPassword(new_username, new_password).then(function () {
             // Success
-            res.send('New account created :) Please login');
-            //res.sendFile(`${__dirname}/views/signIn.html`);
+			res.redirect('/login?success=account_created');
         })
             .catch(function (error) {
                 // Failed
@@ -87,21 +85,21 @@ app.post('/signup', function (req, res) {
                 var errorMessage = error.message;
 
                 if (errorCode == 'auth/email-already-in-use') {
-                    res.send('An account already exists for this email.');
+					res.redirect('/signup?error=email_already_in_use');
                 }
                 else if (errorCode == 'auth/invalid-email') {
-                    res.send('Invalid email!');
+                    res.redirect('/signup?error=invalid_email');
                 }
                 else if (errorCode == 'auth/weak-password') {
-                    res.send('Weak password!');
+                    res.redirect('/signup?error=weak_password');
                 }
                 else {
-                    res.send('AHHHH SOMETHING WENT WRONG!!');
+                    res.redirect('/signup?error=unexpected_err');
                 }
             });
     }
     else {
-        res.send('Passwords do not match!');
+		res.redirect('/signup?error=mismatched_pws');
     }
 });
 

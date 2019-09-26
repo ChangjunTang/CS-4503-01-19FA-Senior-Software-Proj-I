@@ -99,6 +99,10 @@
 			if (urlParams.get('error') == 'incorrect_user') {
 				document.querySelector('#alert_placeholder').innerHTML = 'Incorrect username and/or password';
 			}
+			
+			if(urlParams.get('success') == 'account_created') {
+				document.querySelector('#alert_placeholder').innerHTML = 'New account created. Please login.';
+			}
 		</script>
 </body>
 
