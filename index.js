@@ -36,7 +36,8 @@ app.use(express.static('static'));
 
 app.get('/', function (req, res) {
     if (req.session.loggedin) {
-        res.send(`Welcome back ${req.session.username}`);
+        //res.send(`Welcome back ${req.session.username}`);
+		res.sendFile(`${__dirname}/views/HomePage.html`);
     }
     else {
         res.sendFile(`${__dirname}/views/index.html`);
