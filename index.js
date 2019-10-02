@@ -19,11 +19,6 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 
-// Logs all requests to the console
-app.use(function (req, res, next) {
-    log(`${req.ip} ${req.method} ${req.originalUrl}`);
-    next();
-});
 app.use(session({
     // Will need to change these settings later
     secret: 'secret',
@@ -32,6 +27,11 @@ app.use(session({
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('static'));
+app.use(function (req, res, next) {
+    // Logs all requests to the console
+    log(`${req.ip} ${req.method} ${req.originalUrl} ${req.sessionID}`);
+    next();
+});
 
 
 app.get('/', function (req, res) {
@@ -53,9 +53,7 @@ app.get('/signup', function (req, res) {
 });
 
 app.get('/signout', function (req, res) {
-    req.session.loggedin = false;
-
-    res.redirect('/login');
+    req.session.destroy(() => res.redirect('/login'));
 });
 
 app.post('/login', function (req, res) {
