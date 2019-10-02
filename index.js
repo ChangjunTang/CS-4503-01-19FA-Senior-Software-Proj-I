@@ -37,7 +37,7 @@ app.use(express.static('static'));
 app.get('/', function (req, res) {
     if (req.session.loggedin) {
         //res.send(`Welcome back ${req.session.username}`);
-		res.sendFile(`${__dirname}/views/HomePage.html`);
+        res.sendFile(`${__dirname}/views/HomePage.html`);
     }
     else {
         res.sendFile(`${__dirname}/views/index.html`);
@@ -52,6 +52,11 @@ app.get('/signup', function (req, res) {
     res.sendFile(`${__dirname}/views/signUp.html`);
 });
 
+app.get('/signout', function (req, res) {
+    req.session.loggedin = false;
+
+    res.redirect('/login');
+});
 
 app.post('/login', function (req, res) {
     const username = req.body.username;
@@ -78,7 +83,7 @@ app.post('/signup', function (req, res) {
     if (new_password == new_password2) {
         firebase.auth().createUserWithEmailAndPassword(new_username, new_password).then(function () {
             // Success
-			res.redirect('/login?success=account_created');
+            res.redirect('/login?success=account_created');
         })
             .catch(function (error) {
                 // Failed
@@ -86,7 +91,7 @@ app.post('/signup', function (req, res) {
                 var errorMessage = error.message;
 
                 if (errorCode == 'auth/email-already-in-use') {
-					res.redirect('/signup?error=email_already_in_use');
+                    res.redirect('/signup?error=email_already_in_use');
                 }
                 else if (errorCode == 'auth/invalid-email') {
                     res.redirect('/signup?error=invalid_email');
@@ -100,7 +105,7 @@ app.post('/signup', function (req, res) {
             });
     }
     else {
-		res.redirect('/signup?error=mismatched_pws');
+        res.redirect('/signup?error=mismatched_pws');
     }
 });
 
