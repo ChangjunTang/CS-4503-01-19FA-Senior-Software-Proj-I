@@ -1,0 +1,18 @@
+{% extends "layout.njk" %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="css/JJBP-BOT.CSS">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col text-center">
+
+        {% include "parts/_header.njk" %}
+
+        {% block main %}
+        {% endblock main %}
+    </div>
+</div>
+{% endblock content %}

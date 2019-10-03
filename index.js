@@ -1,6 +1,7 @@
 const log = require('./loggers').log;
 const express = require('express');
 const session = require('express-session');
+const nunjucks = require('nunjucks');
 const app = express();
 const port = 3000;
 
@@ -18,6 +19,12 @@ firebase.initializeApp(config);
 // save the firebase database to a variable
 var database = firebase.database();
 
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
+app.set('view engine', 'njk');
+app.set('views', `${__dirname}/views`);
 
 app.use(session({
     // Will need to change these settings later
@@ -36,8 +43,10 @@ app.use(function (req, res, next) {
 
 app.get('/', function (req, res) {
     if (req.session.loggedin) {
-        //res.send(`Welcome back ${req.session.username}`);
-        res.sendFile(`${__dirname}/views/HomePage.html`);
+        res.render('homepage', {
+            pageTitle: 'Home',
+            username: req.session.username
+        });
     }
     else {
         res.redirect('/login');
@@ -45,11 +54,15 @@ app.get('/', function (req, res) {
 });
 
 app.get('/login', function (req, res) {
-    res.sendFile(`${__dirname}/views/signIn.html`);
+    res.render('signIn', {
+        pageTitle: 'Login'
+    });
 });
 
 app.get('/signup', function (req, res) {
-    res.sendFile(`${__dirname}/views/signUp.html`);
+    res.render('signUp', {
+        pageTitle: 'Sign Up'
+    });
 });
 
 app.get('/signout', function (req, res) {
