@@ -120,6 +120,10 @@ app.post('/signup', function (req, res) {
     }
 });
 
+app.use(function (req, res) {
+    res.status(404).render('404');
+});
+
 app.listen(port, function () {
     console.log(`Listening on port ${port}`);
 });

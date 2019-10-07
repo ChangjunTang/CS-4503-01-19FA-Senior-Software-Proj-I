@@ -1,0 +1,22 @@
+{% extends "centered_content.njk" %}
+
+{% block head %}
+{{ super() }}
+<style>
+    #words {
+        text-align: center;
+    }
+
+    #words > img {
+        width: 100px;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<div id="words">
+    <img src="img/JJBPBOT_Logo.gif">
+    <h1>Oh, no!</h1>
+    <p>This page doesn't exist</p>
+</div>
+{% endblock %}
