@@ -2,9 +2,9 @@
   "name": "password-manager",
   "version": "1.0.0",
   "description": "A web-based password manager",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "cross-env DEBUG=pswd:log nodemon index.js",
+    "dev": "cross-env DEBUG=pswd:log nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
