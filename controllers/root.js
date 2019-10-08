@@ -16,12 +16,13 @@ router.route('/login')
         res.sendFile(`signIn.html`, { root: `${__dirname}/../views` });
     })
     .post(function (req, res) {
-        users.authenticate(req.body.username, req.body.password).then(function () {
-            req.session.loggedin = true;
-            req.session.username = req.body.username;
-            res.redirect('/');
+        users.authenticate(req.body.username, req.body.password)
+            .then(function () {
+                req.session.loggedin = true;
+                req.session.username = req.body.username;
+                res.redirect('/');
 
-        })
+            })
             .catch(function () {
                 res.redirect('/login?error=incorrect_user');
             });
