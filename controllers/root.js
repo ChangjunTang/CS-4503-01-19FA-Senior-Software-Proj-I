@@ -1,14 +1,10 @@
 const express = require('express');
+const auth = require('../middlewares/auth');
 const users = require('../models/users');
 const router = express.Router();
 
-router.get('/', function (req, res) {
-    if (req.session.loggedin) {
-        res.sendFile(`HomePage.html`, { root: `${__dirname}/../views` });
-    }
-    else {
-        res.redirect('/login');
-    }
+router.get('/', auth, function (req, res) {
+    res.sendFile(`HomePage.html`, { root: `${__dirname}/../views` });
 });
 
 router.route('/login')
