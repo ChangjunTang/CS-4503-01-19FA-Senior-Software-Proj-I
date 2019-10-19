@@ -1,0 +1,43 @@
+{% extends "centered_content.njk" %}
+
+{% block main %}
+<main class="login-form">
+    <div class="cotainer">
+        <div class="cotainer">
+		        <div class="row justify-content-center">
+		            <div class="col-md-8">
+		                <div class="card">
+		                    <div class="card-header">Recover Your Password</div>
+		                    <div class="card-body">
+		                        <form action="" method="">
+		                            <div class="form-group row">
+		                                <label for="email_address" class="col-md-4 col-form-label text-md-right">Enter the email associated with your account:</label>
+		                                <div class="col-md-6">
+		                                    <input type="text" id="user_name" class="form-control" name="userName" required autofocus>
+		                                </div>
+		                            </div>
+
+		                            <div class="col-md-6 offset-md-4">
+		                                <button type="submit" class="btn btn-primary">
+		                                    Send Email
+		                                </button>
+		                            </div>
+		                    </div>
+		                    </form>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+    </div>
+</main>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') == 'incorrect_user') {
+        document.querySelector('#alert_placeholder').innerHTML = 'Incorrect username and/or password';
+    }
+    
+    if(urlParams.get('success') == 'account_created') {
+        document.querySelector('#alert_placeholder').innerHTML = 'New account created. Please login.';
+    }
+</script>
+{% endblock %}
