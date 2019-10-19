@@ -1,4 +1,5 @@
 const express = require('express');
+const passwords = require('../models/passwords');
 const router = express.Router();
 
 router.use(require('../middlewares/apiAuth'));
@@ -6,31 +7,55 @@ router.use(require('../middlewares/apiAuth'));
 router.route('/passwords')
     // Add a new password for a user
     .post(function (req, res) {
-        res.json({
-            status: 'success',
-            message: ''
-        });
+        json = {
+            method: 'passwords.post'
+        }
+
+        try {
+            passwords.add(
+                req.session.username,
+                req.body.title,
+                req.body.username,
+                req.body.password);
+        }
+        catch (e) {
+            json.error = { message: e.message }
+        }
+
+        res.json(json);
     })
     // Delete a password for a user
     .delete(function (req, res) {
-        res.json({
-            status: 'success',
-            message: ''
-        });
+        json = {
+            method: 'passwords.delete'
+        };
+
+        try {
+            passwords.remove(
+                req.session.username,
+                req.body.title,
+                req.body.username);
+        }
+        catch (e) {
+            json.error = { message: e.message }
+        }
+
+        res.json(json);
     })
     // Fetch passwords for a user
     .get(function (req, res) {
+        let items = passwords.get(req.session.username);
+
         res.json({
-            status: 'success',
-            message: ''
+            method: 'passwords.get',
+            data: { items }
         });
     });
 
 router.use(function (req, res) {
     res.status(404)
         .json({
-            status: 'fail',
-            message: 'endpoint not found'
+            error: { message: 'Endpoint Not Found' }
         });
 });
 

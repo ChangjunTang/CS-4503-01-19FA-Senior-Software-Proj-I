@@ -59,6 +59,10 @@ router.route('/signup')
             });
     });
 
+router.get('/restTest', function (req, res) {
+    res.render('restTest');
+})
+
 router.get('/signout', function (req, res) {
     req.session.destroy(() => res.redirect('/login'));
 });

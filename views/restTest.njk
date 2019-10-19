@@ -1,0 +1,108 @@
+{% extends "centered_content.njk" %}
+
+{% block main %}
+
+<div id="passwords">
+    
+</div>
+<script>
+async function fetchPasswords() {
+    document.querySelector('#passwords').innerHTML = `
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Delete?</th>
+            <tr>
+        </table>
+    `;
+
+    let res = await fetch('/api/v1/passwords');
+    res = await res.json();
+
+    if(res.error || !res.data.items) {
+        return;
+    }
+
+    let html = '';
+
+    for(let entry of res.data.items) {
+        html += `
+            <tr class="entry">
+                <td class="title">${entry.title}</td>
+                <td class="username">${entry.storedUsername}</td>
+                <td class="password">${entry.storedPassword}</td>
+                <td><button class="delete">Delete</button></td>
+            </tr>
+        `;
+    }
+
+    document.querySelector('#passwords tr').insertAdjacentHTML('afterend', html);
+    setupDelete();
+}
+
+function setupDelete() {
+    for(let entry of document.querySelectorAll('.entry')) {
+        const btn = entry.querySelector('.delete');
+        btn.addEventListener('click', function(e) {
+            const title = entry.querySelector('.title').innerHTML
+            const username = entry.querySelector('.username').innerHTML;
+            deleteEntry(title, username);
+            fetchPasswords();
+        });
+    }
+}
+
+function deleteEntry(title, username) {
+    const body = new URLSearchParams();
+    body.append('title', title);
+    body.append('username', username);
+
+    fetch('/api/v1/passwords', {
+        method: 'delete',
+        body
+    });
+}
+
+fetchPasswords();
+
+</script>
+
+<form id="addPassword">
+    <label>Title:</label>
+    <input type="text" name="title"></input>
+    <label>Username:</label>
+    <input type="text" name="username"></input>
+    <label>Password:</label>
+    <input type="text" name="password"></input>
+    <input type="submit" name="submit"></input>
+</form>
+<span id="addPasswordError"></span>
+<script>
+document.forms[0].submit.addEventListener('click', async function(e) {
+    e.preventDefault();
+
+    const body = new URLSearchParams();
+    for(let input of document.forms[0].elements) {
+        body.append(input.name, input.value);
+    }
+
+    let res = await fetch('/api/v1/passwords', {
+        method: 'post',
+        body
+    });
+
+    res = await res.json();
+
+    if(res.error) {
+        document.querySelector('#addPasswordError').innerHTML = res.error.message;
+    }
+    else {
+        document.querySelector('#addPasswordError').innerHTML = "";
+        fetchPasswords();
+    }
+});
+</script>
+
+{% endblock %}
