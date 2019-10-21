@@ -59,6 +59,20 @@ router.route('/signup')
             });
     });
 
+
+router.get('/passwordStorage', function (req, res) {
+    res.render('passwordStorage');
+});
+
+router.get('/forgotPass', function (req, res) {
+    res.render('forgotPass');
+});
+
+// Will have to add proper auth to this route later
+router.get('/resetPassword', function (req, res) {
+    res.render('resetPassword');
+});
+
 router.get('/restTest', function (req, res) {
     res.render('restTest');
 })
