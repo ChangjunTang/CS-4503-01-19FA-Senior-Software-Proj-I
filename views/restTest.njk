@@ -45,10 +45,10 @@ async function fetchPasswords() {
 function setupDelete() {
     for(let entry of document.querySelectorAll('.entry')) {
         const btn = entry.querySelector('.delete');
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', async function(e) {
             const title = entry.querySelector('.title').innerHTML
             const username = entry.querySelector('.username').innerHTML;
-            deleteEntry(title, username);
+            await deleteEntry(title, username);
             fetchPasswords();
         });
     }
@@ -59,7 +59,7 @@ function deleteEntry(title, username) {
     body.append('title', title);
     body.append('username', username);
 
-    fetch('/api/v1/passwords', {
+    return fetch('/api/v1/passwords', {
         method: 'delete',
         body
     });
