@@ -24,4 +24,16 @@ function create(username, password1, password2) {
     });
 }
 
-module.exports = { authenticate, create }
+function password_reset(username) {
+	return new Promise(async function (resolve, reject) {
+		try {
+			await firebase.auth().sendPasswordResetEmail(username);
+			resolve();
+		}
+		catch (err) {
+			reject(err);
+		}
+    });
+}
+
+module.exports = { authenticate, create, password_reset }

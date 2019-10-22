@@ -64,9 +64,21 @@ router.get('/passwordStorage', function (req, res) {
     res.render('passwordStorage');
 });
 
-router.get('/forgotPass', function (req, res) {
-    res.render('forgotPass');
-});
+router.route('/forgotPass')
+    .get(function (req, res) {
+        res.render('forgotPass', {
+            pageTitle: 'Forgot Password'
+        });
+    })
+    .post(function (req, res) {
+        users.password_reset(req.body.username)
+            .then(function () {
+				res.redirect('/login?success=email_sent');
+            })
+            .catch(function () {
+                res.redirect('/forgotPass?error=incorrect_user');
+            });
+    });
 
 // Will have to add proper auth to this route later
 router.get('/resetPassword', function (req, res) {

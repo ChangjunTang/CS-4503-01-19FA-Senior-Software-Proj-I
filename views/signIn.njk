@@ -57,11 +57,15 @@
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('error') == 'incorrect_user') {
-        document.querySelector('#alert_placeholder').innerHTML = 'Incorrect username and/or password';
+        document.querySelector('#alert_placeholder').innerHTML = 'Incorrect email and/or password';
     }
     
     if(urlParams.get('success') == 'account_created') {
         document.querySelector('#alert_placeholder').innerHTML = 'New account created. Please login.';
+    }
+	
+	if(urlParams.get('success') == 'email_sent') {
+        document.querySelector('#alert_placeholder').innerHTML = 'Check email for password reset instructions then login.';
     }
 </script>
 {% endblock %}
