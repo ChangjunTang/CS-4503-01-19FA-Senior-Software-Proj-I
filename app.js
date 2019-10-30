@@ -14,7 +14,8 @@ app.use(require('express-session')({
     // Will need to change these settings later
     secret: 'secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true,
+    cookie: { sameSite: true }
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(require('./middlewares/routeLogger'));
