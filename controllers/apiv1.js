@@ -3,6 +3,7 @@ const passwords = require('../models/passwords');
 const router = express.Router();
 
 router.use(require('../middlewares/apiAuth'));
+router.use(require('../middlewares/csrf')([]));
 
 router.route('/passwords')
     // Add a new password for a user

@@ -47,6 +47,8 @@
                                 </a>
                             </div>
 
+                            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
                         </form>
                     </div>
                 </div>
@@ -59,13 +61,14 @@
     if (urlParams.get('error') == 'incorrect_user') {
         document.querySelector('#alert_placeholder').innerHTML = 'Incorrect email and/or password';
     }
-    
-    if(urlParams.get('success') == 'account_created') {
+    else if(urlParams.get('success') == 'account_created') {
         document.querySelector('#alert_placeholder').innerHTML = 'New account created. Please login.';
     }
-	
-	if(urlParams.get('success') == 'email_sent') {
+	else if(urlParams.get('success') == 'email_sent') {
         document.querySelector('#alert_placeholder').innerHTML = 'Check email for password reset instructions then login.';
+    }
+    else if(urlParams.get('error') == 'csrf') {
+        document.querySelector('#alert_placeholder').innerHTML = 'Sorry, unexpected error occurred.';
     }
 </script>
 {% endblock %}

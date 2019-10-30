@@ -1,7 +1,10 @@
 const express = require('express');
 const auth = require('../middlewares/auth');
+const csrf = require('../middlewares/csrf')();
 const users = require('../models/users');
 const router = express.Router();
+
+router.use(csrf);
 
 router.get('/', auth, function (req, res) {
     res.render('homepage', {
@@ -13,7 +16,8 @@ router.get('/', auth, function (req, res) {
 router.route('/login')
     .get(function (req, res) {
         res.render('signIn', {
-            pageTitle: 'Login'
+            pageTitle: 'Login',
+            csrfToken: req.getToken()
         });
     })
     .post(function (req, res) {
@@ -32,7 +36,8 @@ router.route('/login')
 router.route('/signup')
     .get(function (req, res) {
         res.render('signUp', {
-            pageTitle: 'Sign Up'
+            pageTitle: 'Sign Up',
+            csrfToken: req.getToken()
         });
     })
     .post(function (req, res) {
@@ -67,26 +72,24 @@ router.get('/passwordStorage', function (req, res) {
 router.route('/forgotPass')
     .get(function (req, res) {
         res.render('forgotPass', {
-            pageTitle: 'Forgot Password'
+            pageTitle: 'Forgot Password',
+            csrfToken: req.getToken()
         });
     })
     .post(function (req, res) {
         users.password_reset(req.body.username)
             .then(function () {
-				res.redirect('/login?success=email_sent');
+                res.redirect('/login?success=email_sent');
             })
             .catch(function () {
                 res.redirect('/forgotPass?error=incorrect_user');
             });
     });
 
-// Will have to add proper auth to this route later
-router.get('/resetPassword', function (req, res) {
-    res.render('resetPassword');
-});
-
 router.get('/restTest', function (req, res) {
-    res.render('restTest');
+    res.render('restTest', {
+        csrfToken: req.getToken()
+    });
 })
 
 router.get('/signout', function (req, res) {

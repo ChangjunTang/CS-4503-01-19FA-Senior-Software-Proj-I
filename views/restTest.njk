@@ -1,11 +1,20 @@
 {% extends "centered_content.njk" %}
 
+{% block head %}
+{{ super() }}
+<meta name="csrf-token" content="{{ csrfToken }}">
+{% endblock %}
+
 {% block main %}
 
 <div id="passwords">
     
 </div>
 <script>
+csrfToken = document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute('content');
+
 async function fetchPasswords() {
     document.querySelector('#passwords').innerHTML = `
         <table>
@@ -18,7 +27,11 @@ async function fetchPasswords() {
         </table>
     `;
 
-    let res = await fetch('/api/v1/passwords');
+    let res = await fetch('/api/v1/passwords', {
+        headers: {
+            'CSRF-Token': csrfToken
+        },
+    });
     res = await res.json();
 
     if(res.error || !res.data.items) {
@@ -61,7 +74,10 @@ function deleteEntry(title, username) {
 
     return fetch('/api/v1/passwords', {
         method: 'delete',
-        body
+        body,
+        headers: {
+            'CSRF-Token': csrfToken
+        },
     });
 }
 
@@ -90,7 +106,10 @@ document.forms[0].submit.addEventListener('click', async function(e) {
 
     let res = await fetch('/api/v1/passwords', {
         method: 'post',
-        body
+        body,
+        headers: {
+            'CSRF-Token': csrfToken
+        },
     });
 
     res = await res.json();
