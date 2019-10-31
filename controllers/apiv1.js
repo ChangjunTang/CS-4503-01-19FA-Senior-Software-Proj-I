@@ -5,7 +5,7 @@ const router = express.Router();
 router.use(require('csurf')({ ignoreMethods: [] }));
 router.use(require('../middlewares/apiAuth'));
 router.use(function (err, req, res, next) {
-    if (err.code !== 'EBADCSRFTOKEN') return next(err)
+    if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
     res.json({ error: { message: 'No CSRF token' } });
 });

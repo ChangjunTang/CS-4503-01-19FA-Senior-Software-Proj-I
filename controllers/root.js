@@ -6,13 +6,13 @@ const router = express.Router();
 router.use(require('csurf')());
 router.use(require('../middlewares/superRender'));
 router.use(function (err, req, res, next) {
-    if (err.code !== 'EBADCSRFTOKEN') return next(err)
+    if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
     res.redirect('/login?error=csrf');
 });
 
 router.get('/', auth, function (req, res) {
-    res.render('homepage', {
+    res.superRender('homepage', {
         pageTitle: 'Home',
         username: req.session.username
     });
@@ -69,7 +69,7 @@ router.route('/signup')
 
 
 router.get('/passwordStorage', function (req, res) {
-    res.render('passwordStorage');
+    res.superRender('passwordStorage');
 });
 
 router.route('/forgotPass')
