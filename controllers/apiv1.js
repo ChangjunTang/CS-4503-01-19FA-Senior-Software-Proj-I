@@ -2,8 +2,13 @@ const express = require('express');
 const passwords = require('../models/passwords');
 const router = express.Router();
 
-router.use(require('../middlewares/apiAuth'));
 router.use(require('csurf')({ ignoreMethods: [] }));
+router.use(require('../middlewares/apiAuth'));
+router.use(function (err, req, res, next) {
+    if (err.code !== 'EBADCSRFTOKEN') return next(err)
+
+    res.json({ error: { message: 'No CSRF token' } });
+});
 
 router.route('/passwords')
     // Add a new password for a user

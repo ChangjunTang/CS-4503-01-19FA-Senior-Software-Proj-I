@@ -5,6 +5,11 @@ const router = express.Router();
 
 router.use(require('csurf')());
 router.use(require('../middlewares/superRender'));
+router.use(function (err, req, res, next) {
+    if (err.code !== 'EBADCSRFTOKEN') return next(err)
+
+    res.redirect('/login?error=csrf');
+});
 
 router.get('/', auth, function (req, res) {
     res.render('homepage', {
