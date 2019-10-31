@@ -7,10 +7,7 @@ function authenticate(username, password) {
 function create(username, password1, password2) {
     return new Promise(async function (resolve, reject) {
         if (password1 !== password2) {
-            reject({
-                code: "mismatched_pws",
-                message: "Provided passwords need to match"
-            });
+            reject("mismatched_pws");
         }
         else {
             try {
@@ -18,21 +15,33 @@ function create(username, password1, password2) {
                 resolve();
             }
             catch (err) {
-                reject(err);
+                let code = 'unexpected_err';
+
+                if (err.code === 'auth/email-already-in-use') {
+                    code = 'email_already_in_use';
+                }
+                else if (err.code === 'auth/invalid-email') {
+                    code = 'invalid_email';
+                }
+                else if (err.code === 'auth/weak-password') {
+                    code = 'weak_password';
+                }
+
+                reject(code);
             }
         }
     });
 }
 
 function password_reset(username) {
-	return new Promise(async function (resolve, reject) {
-		try {
-			await firebase.auth().sendPasswordResetEmail(username);
-			resolve();
-		}
-		catch (err) {
-			reject(err);
-		}
+    return new Promise(async function (resolve, reject) {
+        try {
+            await firebase.auth().sendPasswordResetEmail(username);
+            resolve();
+        }
+        catch (err) {
+            reject(err);
+        }
     });
 }
 

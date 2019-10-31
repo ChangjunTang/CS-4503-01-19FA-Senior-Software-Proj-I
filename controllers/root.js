@@ -49,24 +49,9 @@ router.route('/signup')
                 res.redirect('/login?success=account_created');
             })
             .catch(function (err) {
-                if (err.code === 'auth/email-already-in-use') {
-                    res.redirect('/signup?error=email_already_in_use');
-                }
-                else if (err.code === 'auth/invalid-email') {
-                    res.redirect('/signup?error=invalid_email');
-                }
-                else if (err.code === 'auth/weak-password') {
-                    res.redirect('/signup?error=weak_password');
-                }
-                else if (err.code === 'mismatched_pws') {
-                    res.redirect('/signup?error=mismatched_pws');
-                }
-                else {
-                    res.redirect('/signup?error=unexpected_err');
-                }
+                res.redirect(`/signup?error=${err}`);
             });
     });
-
 
 router.get('/passwordStorage', function (req, res) {
     res.superRender('passwordStorage');
