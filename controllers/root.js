@@ -3,7 +3,7 @@ const auth = require('../middlewares/auth');
 const users = require('../models/users');
 const router = express.Router();
 
-router.use(require('../middlewares/csrf')());
+router.use(require('csurf')());
 router.use(require('../middlewares/superRender'));
 
 router.get('/', auth, function (req, res) {

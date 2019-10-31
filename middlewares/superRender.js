@@ -3,7 +3,7 @@ function superRender(req, res, next) {
         locals = {
             ...locals,
             ...{
-                csrfToken: req.getToken(),
+                csrfToken: req.csrfToken(),
                 nonce: res.locals.nonce
             }
         }
