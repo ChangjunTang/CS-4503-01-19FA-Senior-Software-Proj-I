@@ -1,10 +1,10 @@
 const express = require('express');
 const auth = require('../middlewares/auth');
-const csrf = require('../middlewares/csrf')();
 const users = require('../models/users');
 const router = express.Router();
 
-router.use(csrf);
+router.use(require('../middlewares/csrf')());
+router.use(require('../middlewares/superRender'));
 
 router.get('/', auth, function (req, res) {
     res.render('homepage', {
@@ -15,9 +15,8 @@ router.get('/', auth, function (req, res) {
 
 router.route('/login')
     .get(function (req, res) {
-        res.render('signIn', {
+        res.superRender('signIn', {
             pageTitle: 'Login',
-            csrfToken: req.getToken()
         });
     })
     .post(function (req, res) {
@@ -35,9 +34,8 @@ router.route('/login')
 
 router.route('/signup')
     .get(function (req, res) {
-        res.render('signUp', {
+        res.superRender('signUp', {
             pageTitle: 'Sign Up',
-            csrfToken: req.getToken()
         });
     })
     .post(function (req, res) {
@@ -71,9 +69,8 @@ router.get('/passwordStorage', function (req, res) {
 
 router.route('/forgotPass')
     .get(function (req, res) {
-        res.render('forgotPass', {
+        res.superRender('forgotPass', {
             pageTitle: 'Forgot Password',
-            csrfToken: req.getToken()
         });
     })
     .post(function (req, res) {
@@ -87,9 +84,7 @@ router.route('/forgotPass')
     });
 
 router.get('/restTest', function (req, res) {
-    res.render('restTest', {
-        csrfToken: req.getToken()
-    });
+    res.superRender('restTest');
 })
 
 router.get('/signout', function (req, res) {

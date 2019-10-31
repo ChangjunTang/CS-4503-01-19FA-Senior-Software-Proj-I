@@ -10,7 +10,7 @@
 <div id="passwords">
     
 </div>
-<script>
+<script nonce={{ nonce }}>
 csrfToken = document
     .querySelector('meta[name="csrf-token"]')
     .getAttribute('content');
@@ -95,7 +95,7 @@ fetchPasswords();
     <input type="submit" name="submit"></input>
 </form>
 <span id="addPasswordError"></span>
-<script>
+<script nonce={{ nonce }}>
 document.forms[0].submit.addEventListener('click', async function(e) {
     e.preventDefault();
 

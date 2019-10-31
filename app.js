@@ -10,15 +10,11 @@ require('nunjucks').configure('views', {
 app.set('view engine', 'njk');
 app.set('views', `${__dirname}/views`);
 
-app.use(require('express-session')({
-    // Will need to change these settings later
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { sameSite: true }
-}));
+app.use(require('express-session')(require('./session-config')));
 app.use(express.urlencoded({ extended: true }));
 app.use(require('./middlewares/routeLogger'));
+app.use(require('./middlewares/scriptNonce'));
+app.use(require('helmet')(require('./helmet-config')));
 app.use(express.static('static'));
 app.use(require('./controllers'));
 

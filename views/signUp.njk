@@ -45,7 +45,7 @@
         </div>
     </div>
 </main>
-<script>
+<script nonce={{ nonce }}>
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get('error') == 'email_already_in_use') {
         document.querySelector('#alert_placeholder').innerHTML = 'An account already exists for that email.';

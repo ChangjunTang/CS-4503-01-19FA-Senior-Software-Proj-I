@@ -33,7 +33,7 @@
 		    </div>
     </div>
 </main>
-<script>
+<script nonce={{ nonce }}>
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('error') == 'incorrect_user') {
         document.querySelector('#alert_placeholder').innerHTML = 'Email not recognized. Try again.';
