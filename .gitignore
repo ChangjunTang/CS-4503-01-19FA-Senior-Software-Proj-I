@@ -93,3 +93,6 @@ public
 
 # VS Code stuff
 .vscode/
+
+# Secret key
+serviceAccountKey.json
