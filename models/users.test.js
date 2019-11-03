@@ -1,17 +1,19 @@
 const users = require('./users');
-const firebase = require('../firebase-config');
+require('../firebase-config');
+const admin = require('firebase-admin');
 
 describe('creating an account', () => {
-    beforeEach(() => {
-        firebase.auth().
-        const user = firebase.auth().getUserByEmail('testuser@test.com')
-            .catch(function (err) {
-                if (err.code !== 'auth/user-not-found') {
-                    throw err;
-                }
+    test('creating an account should not throw an error', () => {
+        return users.create('matthewparris@outlook.com', 'securePassword', 'securePassword')
+            .then(function (data) {
+                expect(data).toBe(undefined);
+            })
+            .then(function () {
+                admin.auth().getUserByEmail('matthewparris@outlook.com')
+                    .then(user => {
+                        admin.auth().deleteUser(user.uid);
+                    });
             });
-        console.log(user);
-        firebase.auth().delete(user.uid);
     });
 
     test('when passwords do not match, throw an error', () => {
@@ -38,11 +40,5 @@ describe('creating an account', () => {
             });
     });
 
-    test('creating an account should not throw an error', () => {
-        return users.create('testuser@test.com', 'securePassword', 'securePassword')
-            .then(function (data) {
-                expect(data).toBe(undefined);
-            });
-    });
 
 });
