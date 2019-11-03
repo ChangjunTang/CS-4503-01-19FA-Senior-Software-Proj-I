@@ -7,4 +7,12 @@ const config = {
     messagingSenderId: "757073654109"
 };
 
+const admin = require('firebase-admin');
+const key = require('./serviceAccountKey.json');
+const adminConfig = {
+    credential: admin.credential.cert(key),
+    databaseURL: 'https://jjbp-bot.firebaseio.com'
+};
+
 require('firebase').initializeApp(config);
+admin.initializeApp(adminConfig);
