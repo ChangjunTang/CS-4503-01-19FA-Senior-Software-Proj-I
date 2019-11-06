@@ -10,6 +10,7 @@
 <div id="passwords">
     
 </div>
+<button id='addPasswordButton' type="button" class="btn btn-primary">+</button>
 <script nonce={{ nonce }}>
 csrfToken = document
     .querySelector('meta[name="csrf-token"]')
@@ -85,15 +86,30 @@ fetchPasswords();
 
 </script>
 
-<form id="addPassword">
-    <label>Title:</label>
-    <input type="text" name="title"></input>
-    <label>Username:</label>
-    <input type="text" name="username"></input>
-    <label>Password:</label>
-    <input type="text" name="password"></input>
-    <input type="submit" name="submit"></input>
-</form>
+
+<div class="modal" tabindex="-1" role="dialog" id="addPasswordModal" aria-labelledby="addPasswordModalLabel" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id='addPasswordModalLabel'>Add a Password</h2>
+        </div>
+        <div class="modal-body">
+            <form id="addPassword">
+                <label>Title:</label>
+                <input id='modalTitle' type="text" name="title"></input>
+                <label>Username:</label>
+                <input id='modalUser' type="text" name="username"></input>
+                <label>Password:</label>
+                <input id='modalPass' type="text" name="password"></input>
+                <input id='submitModal' type="submit" name="submit"></input>
+            </form>
+            <input type="button" id='closeModal' name="close" value="Close"></input>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
+</div>
+
 <span id="addPasswordError"></span>
 <script nonce={{ nonce }}>
 document.forms[0].submit.addEventListener('click', async function(e) {
@@ -122,6 +138,28 @@ document.forms[0].submit.addEventListener('click', async function(e) {
         fetchPasswords();
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('addPasswordButton')
+        .addEventListener('click', function doThings() { 
+            document.getElementById("addPasswordModal").style = "display:block";
+        });
+    document.getElementById('closeModal')
+        .addEventListener('click', function doThings() { 
+            document.getElementById("addPasswordModal").style = "display:none";
+            document.getElementById("modalTitle").value = "";
+            document.getElementById("modalUser").value = "";
+            document.getElementById("modalPass").value = "";
+        });
+    document.getElementById('submitModal')
+    .addEventListener('click', function doThings() {
+            document.getElementById("addPasswordModal").style = "display:none";
+            document.getElementById("modalTitle").value = "";
+            document.getElementById("modalUser").value = "";
+            document.getElementById("modalPass").value = "";
+        });
+});
+
 </script>
 
 {% endblock %}

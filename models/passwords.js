@@ -1,4 +1,5 @@
 const passwords = {};
+const firebase = require('firebase');
 
 function add(user, title, storedUsername, storedPassword) {
     if (!user || !title || !storedUsername || !storedPassword) {
@@ -13,6 +14,10 @@ function add(user, title, storedUsername, storedPassword) {
         throw new Error('Duplicate Password');
     }
     else {
+        var firebaseUser = firebase.auth().currentUser;
+        if (firebaseUser) {
+            addPassword(firebaseUser.uid, title, storedUsername, storedPassword);
+        }
         passwords[user].push({ title, storedPassword, storedUsername })
     }
 }
@@ -36,6 +41,15 @@ function remove(user, title, storedUsername) {
 
     throw new Error('Password Entry Does Not Exist');
 }
+
+function addPassword(userId, title, username, password) {
+    var temp = userId + title;
+    firebase.database().ref('users/' + userId).push({
+        website: title,
+        username: username,
+        password: password
+    });
+  }
 
 function get(user) {
     if (!user) {
