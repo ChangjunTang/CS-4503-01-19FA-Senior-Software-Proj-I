@@ -1,46 +1,43 @@
-// const passwords = {};
-// const firebase = require('firebase');
 const fsRef = require('firebase-admin').firestore().collection('/passwords');
+
+// TODO: Add better error checking? What happens if a query fails....
 
 async function add(user, title, storedUsername, storedPassword) {
     if (!user || !title || !storedUsername || !storedPassword) {
         throw new MissingParameterError();
     }
 
-    // if (!passwords[user]) {
-    //     passwords[user] = []
-    // }
+    // TODO: Escape/sanitize title, storedUsername, and storedPassword
 
-    const snapshot = await fsRef
+    const snapshot = await getPassword(user, title, storedUsername)
+
+    if (snapshot.empty) {
+        // TODO: At bare minimum, the password needs to encrypted
+        // The other fields can be encrypted, but that makes everything more complicated
+        await addPassword(user, title, storedUsername, storedPassword);
+    }
+    else {
+        throw new DuplicatePasswordError();
+    }
+}
+
+function getPassword(user, title, storedUsername) {
+    return fsRef
         .where('user', '==', user)
         .where('storedUsername', '==', storedUsername)
         .where('title', '==', title)
         .get();
+}
 
-    if (snapshot.empty) {
-        await fsRef
-            .doc()
-            .set({
-                'user': user,
-                'title': title,
-                'storedUsername': storedUsername,
-                'storedPassword': storedPassword
-            });
-    }
-    else {
-        throw new Error('Duplicate Password');
-    }
-
-    // if (passwords[user].find(entry => entry.storedUsername == storedUsername && entry.title == title)) {
-    //     throw new Error('Duplicate Password');
-    // }
-    // else {
-    //     var firebaseUser = firebase.auth().currentUser;
-    //     if (firebaseUser) {
-    //         addPassword(firebaseUser.uid, title, storedUsername, storedPassword);
-    //     }
-    //     passwords[user].push({ title, storedPassword, storedUsername })
-    // }
+function addPassword(user, title, storedUsername, storedPassword) {
+    return fsRef
+        .doc()
+        .set({
+            'user': user,
+            'title': title,
+            'storedUsername': storedUsername,
+            'storedPassword': storedPassword
+        });
 }
 
 async function remove(user, title, storedUsername) {
@@ -48,42 +45,18 @@ async function remove(user, title, storedUsername) {
         throw new MissingParameterError();
     }
 
-    const snapshot = await fsRef
-        .where('user', '==', user)
-        .where('title', '==', title)
-        .where('storedUsername', '==', storedUsername)
-        .get()
+    // TODO: Escape/sanitize title and storedUsername
+    // I don't think this one is as important but might as well do it
+
+    const snapshot = await getPassword(user, title, storedUsername);
 
     if (snapshot.empty) {
-        throw new Error('Password Entry Does Not Exist');
+        throw new PasswordEntryDoesNotExistError();
     }
     else {
         await snapshot.docs[0].ref.delete();
     }
-
-    // if (!passwords[user]) {
-    //     throw new Error('No Passwords Stored');
-    // }
-
-    // for (let ii = 0; ii < passwords[user].length; ii++) {
-    //     entry = passwords[user][ii];
-    //     if (entry.storedUsername == storedUsername && entry.title == title) {
-    //         passwords[user].splice(ii, 1);
-    //         return;
-    //     }
-    // }
-
-    // throw new Error('Password Entry Does Not Exist');
 }
-
-// function addPassword(userId, title, username, password) {
-//     var temp = userId + title;
-//     firebase.database().ref('users/' + userId).push({
-//         website: title,
-//         username: username,
-//         password: password
-//     });
-// }
 
 async function get(user) {
     if (!user) {
@@ -99,16 +72,31 @@ async function get(user) {
     snapshot.forEach(function (doc) {
         const data = doc.data();
         delete data.user;
+        // TODO: decrypt all of the stuff before sending back to user
         passwords.push(data);
     });
 
     return passwords;
-    // return passwords[user];
 }
 
 class MissingParameterError extends Error {
     constructor() {
         super("Missing Parameter");
+        this.code = 400;
+    }
+}
+
+class DuplicatePasswordError extends Error {
+    constructor() {
+        super('Duplicate Password');
+        this.code = 400;
+    }
+}
+
+class PasswordEntryDoesNotExistError extends Error {
+    constructor() {
+        super('Password Entry Does Not Exist');
+        this.code = 404;
     }
 }
 

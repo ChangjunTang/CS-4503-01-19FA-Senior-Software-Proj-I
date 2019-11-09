@@ -7,6 +7,7 @@ router.use(require('../middlewares/apiAuth'));
 router.use(function (err, req, res, next) {
     if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
+    res.status(400);
     res.json({ error: { message: 'No CSRF token' } });
 });
 
@@ -20,6 +21,7 @@ router.route('/passwords')
         passwords
             .add(req.session.username, req.body.title, req.body.username, req.body.password)
             .catch(function (e) {
+                res.status(e.code || 400);
                 json.error = { message: e.message }
             })
             .finally(function () {
@@ -35,6 +37,7 @@ router.route('/passwords')
         passwords
             .remove(req.session.username, req.body.title, req.body.username)
             .catch(function (e) {
+                res.status(e.code || 400);
                 json.error = { message: e.message }
             })
             .finally(function () {
