@@ -1,7 +1,5 @@
 const fsRef = require('firebase-admin').firestore().collection('/passwords');
 
-// TODO: Add better error checking? What happens if a query fails....
-
 async function add(user, title, storedUsername, storedPassword) {
     if (!user || !title || !storedUsername || !storedPassword) {
         throw new MissingParameterError();
@@ -26,7 +24,10 @@ function getPassword(user, title, storedUsername) {
         .where('user', '==', user)
         .where('storedUsername', '==', storedUsername)
         .where('title', '==', title)
-        .get();
+        .get()
+        .catch(function () {
+            throw new QueryFailedError();
+        });
 }
 
 function addPassword(user, title, storedUsername, storedPassword) {
@@ -37,6 +38,9 @@ function addPassword(user, title, storedUsername, storedPassword) {
             'title': title,
             'storedUsername': storedUsername,
             'storedPassword': storedPassword
+        })
+        .catch(function () {
+            throw new QueryFailedError();
         });
 }
 
@@ -54,8 +58,16 @@ async function remove(user, title, storedUsername) {
         throw new PasswordEntryDoesNotExistError();
     }
     else {
-        await snapshot.docs[0].ref.delete();
+        await deleteDocument(snapshot.docs[0].ref);
     }
+}
+
+function deleteDocument(docRef) {
+    return docRef
+        .delete()
+        .catch(function () {
+            throw new QueryFailedError();
+        });
 }
 
 async function get(user) {
@@ -63,9 +75,7 @@ async function get(user) {
         throw new MissingParameterError();
     }
 
-    const snapshot = await fsRef
-        .where('user', '==', user)
-        .get()
+    const snapshot = await getAllPasswordsForUser(user);
 
     let passwords = [];
 
@@ -77,6 +87,15 @@ async function get(user) {
     });
 
     return passwords;
+}
+
+function getAllPasswordsForUser(user) {
+    return fsRef
+        .where('user', '==', user)
+        .get()
+        .catch(function () {
+            throw new QueryFailedError();
+        });
 }
 
 class MissingParameterError extends Error {
@@ -97,6 +116,13 @@ class PasswordEntryDoesNotExistError extends Error {
     constructor() {
         super('Password Entry Does Not Exist');
         this.code = 404;
+    }
+}
+
+class QueryFailedError extends Error {
+    constructor() {
+        super('Database Query Failed');
+        this.code = 400;
     }
 }
 
