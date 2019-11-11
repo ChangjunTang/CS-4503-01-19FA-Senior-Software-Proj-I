@@ -7,6 +7,7 @@ router.use(require('../middlewares/apiAuth'));
 router.use(function (err, req, res, next) {
     if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
+    res.status(400);
     res.json({ error: { message: 'No CSRF token' } });
 });
 
@@ -17,18 +18,15 @@ router.route('/passwords')
             method: 'passwords.post'
         }
 
-        try {
-            passwords.add(
-                req.session.username,
-                req.body.title,
-                req.body.username,
-                req.body.password);
-        }
-        catch (e) {
-            json.error = { message: e.message }
-        }
-
-        res.json(json);
+        passwords
+            .add(req.session.username, req.body.title, req.body.username, req.body.password)
+            .catch(function (e) {
+                res.status(e.code || 400);
+                json.error = { message: e.message }
+            })
+            .finally(function () {
+                res.json(json);
+            });
     })
     // Delete a password for a user
     .delete(function (req, res) {
@@ -36,26 +34,26 @@ router.route('/passwords')
             method: 'passwords.delete'
         };
 
-        try {
-            passwords.remove(
-                req.session.username,
-                req.body.title,
-                req.body.username);
-        }
-        catch (e) {
-            json.error = { message: e.message }
-        }
-
-        res.json(json);
+        passwords
+            .remove(req.session.username, req.body.title, req.body.username)
+            .catch(function (e) {
+                res.status(e.code || 400);
+                json.error = { message: e.message }
+            })
+            .finally(function () {
+                res.json(json);
+            });
     })
     // Fetch passwords for a user
     .get(function (req, res) {
-        let items = passwords.get(req.session.username);
-
-        res.json({
-            method: 'passwords.get',
-            data: { items }
-        });
+        passwords
+            .get(req.session.username)
+            .then(function (items) {
+                res.json({
+                    method: 'passwords.get',
+                    data: { items }
+                });
+            });
     });
 
 router.use(function (req, res) {
