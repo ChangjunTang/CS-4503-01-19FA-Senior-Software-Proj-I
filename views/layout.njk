@@ -11,29 +11,8 @@
     <meta name="description" content="{{ pageDescription }}">
     <meta name="author" content="Team JJBP-BOT">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="icon" data-emoji="🔒" type="image/png">
-
-    <script nonce={{ nonce }}>
-      const favicon = document.querySelector("link[rel=icon]");
-
-      if (favicon) {
-        const emoji = favicon.getAttribute("data-emoji");
-
-        if (emoji) {
-          const canvas = document.createElement("canvas");
-          canvas.height = 64;
-          canvas.width = 64;
-
-          const ctx = canvas.getContext("2d");
-          ctx.font = "64px serif";
-          ctx.fillText(emoji, 0, 64);
-
-          favicon.href = canvas.toDataURL();
-        }
-      }
-    </script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">   
 
   {% endblock %}
   </head>
