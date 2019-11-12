@@ -36,11 +36,21 @@ function create(username, password1, password2) {
 function password_reset(username) {
     return new Promise(async function (resolve, reject) {
         try {
+            await firebase.auth().fetchSignInMethodsForEmail(username);
             await firebase.auth().sendPasswordResetEmail(username);
             resolve();
         }
         catch (err) {
-            reject(err);
+            let code = 'unexpected_err';
+
+            if (err.code === 'auth/invalid-email') {
+                code = 'invalid_email';
+            }
+            else if (err.code === 'auth/user-not-found') {
+                code = 'incorrect_user';
+            }
+
+            reject(code);
         }
     });
 }

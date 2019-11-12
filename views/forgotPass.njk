@@ -38,5 +38,11 @@
     if (urlParams.get('error') == 'incorrect_user') {
         document.querySelector('#alert_placeholder').innerHTML = 'Email not recognized. Try again.';
     }
+	else if (urlParams.get('error') == 'invalid_email') {
+        document.querySelector('#alert_placeholder').innerHTML = 'Invalid email format. Try again.';
+    }
+	else if(urlParams.get('error') == 'unexpected_err') {
+		document.querySelector('#alert_placeholder').innerHTML = 'Sorry, unexpected error occurred. Try again.';
+    }
 </script>
 {% endblock %}
