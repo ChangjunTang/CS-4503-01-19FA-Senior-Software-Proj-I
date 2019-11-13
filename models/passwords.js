@@ -1,11 +1,18 @@
 const fsRef = require('firebase-admin').firestore().collection('/passwords');
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+const window = (new JSDOM('')).window;
+const DOMPurify = createDOMPurify(window);
 
 async function add(user, title, storedUsername, storedPassword) {
     if (!user || !title || !storedUsername || !storedPassword) {
         throw new MissingParameterError();
     }
 
-    // TODO: Escape/sanitize title, storedUsername, and storedPassword
+    // TODO: Check that this actually does Escape/sanitize title, storedUsername, and storedPassword
+    title = DOMPurify.sanitize(title);
+    storedUsername = DOMPurify.sanitize(storedUsername);
+    storedPassword = DOMPurify.sanitize(storedPassword);
 
     const snapshot = await getPassword(user, title, storedUsername)
 
