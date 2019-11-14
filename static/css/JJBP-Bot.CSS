@@ -10,6 +10,10 @@ input[type=text], input[type=password] {
   box-sizing: border-box;
 }
 
+.modal-backdrop {
+  z-index: 0;
+}
+
 /* Set a style for all buttons */
 button {
   background-color: #4CAF50;

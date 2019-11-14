@@ -6,11 +6,12 @@
 {% endblock %}
 
 {% block main %}
-
-<div id="passwords">
-    
+<div>
+    <div id="passwords">
+        
+    </div>
+    <button id='addPasswordButton' type="button" class="btn btn-primary">+</button>
 </div>
-<button id='addPasswordButton' type="button" class="btn btn-primary">+</button>
 <script nonce={{ nonce }}>
 csrfToken = document
     .querySelector('meta[name="csrf-token"]')
@@ -18,13 +19,15 @@ csrfToken = document
 
 async function fetchPasswords() {
     document.querySelector('#passwords').innerHTML = `
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Delete?</th>
-            <tr>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Username</th>
+                <th scope="col">Password</th>
+                <th scope="col">Delete?</th>
+                </tr>
+            </thead>
         </table>
     `;
 
@@ -98,11 +101,25 @@ fetchPasswords();
                 <input id='modalTitle' type="text" name="title"></input>
                 <label>Username:</label>
                 <input id='modalUser' type="text" name="username"></input>
-                <label>Password:</label>
+                <div class="card">
+                    <div class="card-header">Password:</div>
+                    <input id='slider' type="range" value='12' min="6" max="32" step="1" list="steplist">
+                    <div id='text'>Length: 12
+
+                    </div>
+                    <div>
+                        <input id='num' checked type='checkbox'>
+                        Numbers
+                    </div>
+                    <div>
+                        <input id='spec' checked type='checkbox'>
+                        Special Characters
+                    </div>
+                    <br>
+                </div>
                 <input id='modalPass' type="text" name="password"></input>
                 <input id='submitModal' type="submit" name="submit"></input>
             </form>
-            <input type="button" id='closeModal' name="close" value="Close"></input>
         </div>
         <div class="modal-footer">
 
@@ -142,23 +159,149 @@ document.forms[0].submit.addEventListener('click', async function(e) {
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('addPasswordButton')
         .addEventListener('click', function doThings() { 
-            document.getElementById("addPasswordModal").style = "display:block";
-        });
-    document.getElementById('closeModal')
-        .addEventListener('click', function doThings() { 
-            document.getElementById("addPasswordModal").style = "display:none";
-            document.getElementById("modalTitle").value = "";
-            document.getElementById("modalUser").value = "";
-            document.getElementById("modalPass").value = "";
+            generatePassword($("#slider").val());
+            $('#addPasswordModal').modal('show');
+            
         });
     document.getElementById('submitModal')
     .addEventListener('click', function doThings() {
-            document.getElementById("addPasswordModal").style = "display:none";
+            $('#addPasswordModal').modal('hide');
             document.getElementById("modalTitle").value = "";
             document.getElementById("modalUser").value = "";
             document.getElementById("modalPass").value = "";
         });
 });
+
+$(document).ready(function() {
+
+  var prevLen = 12;
+  generatePassword($("#slider").val());
+
+    $('#addPasswordModal').on('hidden.bs.modal', function () {
+        document.getElementById("modalTitle").value = "";
+        document.getElementById("modalUser").value = "";
+        document.getElementById("modalPass").value = "";
+    });
+
+  $("#slider").on("mousemove mouseup", function() {
+    var length = $(this).val();
+    $("#text").text("Length: " + length);
+    if (prevLen != length) {
+      generatePassword(length);
+      prevLen = length;
+    }
+  });
+  $("#num").on("mouseup", function() {
+    if (!$("#num").prop('checked')) {
+      nums = true;
+    } else {
+      nums = false;
+    }
+    generatePassword(prevLen);
+  });
+  $("#spec").on("mouseup", function() {
+    if (!$("#spec").prop('checked')) {
+      specs = true;
+    } else {
+      specs = false;
+    }
+    generatePassword(prevLen);
+  });
+});
+
+var Password = {
+
+  _getRandomByte: function() {
+    // http://caniuse.com/#feat=getrandomvalues
+    if (window.crypto && window.crypto.getRandomValues) {
+      var result = new Uint8Array(1);
+      window.crypto.getRandomValues(result);
+      return result[0];
+    } else if (window.msCrypto && window.msCrypto.getRandomValues) {
+      var result = new Uint8Array(1);
+      window.msCrypto.getRandomValues(result);
+      return result[0];
+    } else {
+      return Math.floor(Math.random() * 256);
+    }
+  },
+
+  generate: function(length) {
+    return Array.apply(null, {
+        'length': length
+      })
+      .map(function() {
+        var result;
+        while (true) {
+          result = String.fromCharCode(this._getRandomByte());
+          if (_pattern.test(result)) {
+            return result;
+          }
+        }
+      }, this)
+      .join('');
+  }
+
+};
+
+function scorePassword(pass) {
+  var score = 0;
+  if (!pass)
+    return score;
+
+  // award every unique letter until 5 repetitions
+  var letters = new Object();
+  for (var i = 0; i < pass.length; i++) {
+    letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+    score += 7.0 / letters[pass[i]];
+  }
+
+  // bonus points for mixing it up
+  var variations = {
+    digits: /\d/.test(pass),
+    lower: /[a-z]/.test(pass),
+    upper: /[A-Z]/.test(pass),
+    nonWords: /\W/.test(pass),
+  }
+
+  variationCount = 0;
+  for (var check in variations) {
+    variationCount += (variations[check] == true) ? 1 : 0;
+  }
+  score += (variationCount - 1) * 10;
+
+  return parseInt(score);
+}
+
+function checkPassStrength(pass) {
+  var score = scorePassword(pass);
+  return score;
+}
+
+var nums = true;
+var specs = true;
+var _pattern = /[a-zA-Z]/;
+
+function generatePassword(len) {
+
+  if (specs == false && nums == false) {
+    _pattern = /[a-zA-Z]/;
+  }
+  if (specs == false && nums == true) {
+    _pattern = /[a-zA-Z0-9]/;
+  }
+  if (specs == true && nums == false) {
+    _pattern = /[a-zA-Z!\@\#\$\%\^\&\*\.\?\-\_\+]/;
+  }
+  if (specs == true && nums == true) {
+    _pattern = /[a-zA-Z0-9!\@\#\$\%\^\&\*\.\?\-\_\+]/;
+  }
+
+  $("#modalPass").val(Password.generate(len));
+
+  var pass = $("#modalPass").val();
+
+}
 
 </script>
 

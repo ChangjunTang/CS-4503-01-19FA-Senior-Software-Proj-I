@@ -29,7 +29,7 @@ router.route('/login')
             .then(function () {
                 req.session.loggedin = true;
                 req.session.username = req.body.username;
-                res.redirect('/');
+                res.redirect('/restTest');
 
             })
             .catch(function () {
