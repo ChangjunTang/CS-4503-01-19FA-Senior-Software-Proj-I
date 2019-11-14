@@ -10,10 +10,16 @@ const helmetConfig = {
                 (req, res) => `'nonce-${res.locals.nonce}'`],
             scriptSrc: [
                 "'self'",
+                'https://code.jquery.com/',
+                'https://cdnjs.cloudflare.com/ajax/libs/',
+                'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/',
                 (req, res) => `'nonce-${res.locals.nonce}'`
             ],
             connectSrc: ["'self'"],
-            imgSrc: ["'self'"],
+            imgSrc: [
+                "'self'",
+                'https://i.stack.imgur.com/dDQbw.png'
+            ],
         }
     }
 }

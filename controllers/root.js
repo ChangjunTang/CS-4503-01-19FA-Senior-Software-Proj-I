@@ -65,17 +65,21 @@ router.route('/forgotPass')
     })
     .post(function (req, res) {
         users.password_reset(req.body.username)
-        .then(function () {
-            res.redirect('/login?success=email_sent');
-        })
-        .catch(function (err) {
-            res.redirect(`/forgotPass?error=${err}`);
-        });
+            .then(function () {
+                res.redirect('/login?success=email_sent');
+            })
+            .catch(function (err) {
+                res.redirect(`/forgotPass?error=${err}`);
+            });
     });
 
 router.get('/restTest', function (req, res) {
     res.superRender('restTest');
 })
+
+router.get('/generator', function (req, res) {
+    res.superRender('strongPasswordsGenerator');
+});
 
 router.get('/signout', function (req, res) {
     req.session.destroy(() => res.redirect('/login'));
