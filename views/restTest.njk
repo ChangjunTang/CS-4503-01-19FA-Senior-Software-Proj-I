@@ -98,27 +98,27 @@ fetchPasswords();
         <div class="modal-body">
             <form id="addPassword">
                 <label>Title:</label>
-                <input id='modalTitle' type="text" name="title"></input>
+                <input id='modalTitle' type="text" name="title" class="form-control"></input>
                 <label>Username:</label>
-                <input id='modalUser' type="text" name="username"></input>
+                <input id='modalUser' type="text" name="username" class="form-control"></input>
                 <div class="card">
                     <div class="card-header">Password:</div>
-                    <input id='slider' type="range" value='12' min="6" max="32" step="1" list="steplist">
+                    <input id='slider' type="range" value='12' min="6" max="32" step="1" list="steplist" class="custom-range">
                     <div id='text'>Length: 12
 
                     </div>
                     <div>
-                        <input id='num' checked type='checkbox'>
+                        <input class="form-check-input" id='num' checked type='checkbox'>
                         Numbers
                     </div>
                     <div>
-                        <input id='spec' checked type='checkbox'>
+                        <input class="form-check-input" id='spec' checked type='checkbox'>
                         Special Characters
                     </div>
                     <br>
                 </div>
-                <input id='modalPass' type="text" name="password"></input>
-                <input id='submitModal' type="submit" name="submit"></input>
+                <input id='modalPass' type="text" name="password" class="form-control"></input>
+                <input id='submitModal' type="submit" name="submit" class="btn btn-primary"></input>
             </form>
         </div>
         <div class="modal-footer">

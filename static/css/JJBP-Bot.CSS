@@ -122,3 +122,8 @@ span.psw {
      width: 100%;
   }
 }
+
+#addPasswordButton {
+  float: left;
+  width: 75px;
+}
