@@ -6,19 +6,29 @@
 {% endblock %}
 
 {% block main %}
+<input id="search" type="text" class="form-control" placeholder="Search..."></input>
+<script nonce={{ nonce }}>
+document.querySelector('#search').addEventListener('keyup', function(e) {
+    for(let entry of document.querySelectorAll('.entry')) {
+            const title = entry.querySelector('.title').innerHTML.toUpperCase();
+            const username = entry.querySelector('.username').innerHTML.toUpperCase();
+            const password = entry.querySelector('.password').innerHTML.toUpperCase();
+            const searchVal = document.querySelector('#search').value.toUpperCase();
+            
+            if(title.indexOf(searchVal) <= -1 && username.indexOf(searchVal) <= -1 && password.indexOf(searchVal) <= -1) {
+                entry.classList.add('d-none');
+            }
+            else if(searchVal === '') {
+                entry.classList.remove('d-none');
+            }
+            else {
+                entry.classList.remove('d-none');
+            }
+        };
+});
+</script>
 <div>
     <div id="passwords">
-        
-    </div>
-    <button id='addPasswordButton' type="button" class="btn btn-primary">+</button>
-</div>
-<script nonce={{ nonce }}>
-csrfToken = document
-    .querySelector('meta[name="csrf-token"]')
-    .getAttribute('content');
-
-async function fetchPasswords() {
-    document.querySelector('#passwords').innerHTML = `
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -28,9 +38,18 @@ async function fetchPasswords() {
                 <th scope="col">Delete?</th>
                 </tr>
             </thead>
+            <tbody>
+            </tbody>
         </table>
-    `;
+    </div>
+    <button id='addPasswordButton' type="button" class="btn btn-primary">+</button>
+</div>
+<script nonce={{ nonce }}>
+csrfToken = document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute('content');
 
+async function fetchPasswords() {
     let res = await fetch('/api/v1/passwords', {
         headers: {
             'CSRF-Token': csrfToken
@@ -47,15 +66,15 @@ async function fetchPasswords() {
     for(let entry of res.data.items) {
         html += `
             <tr class="entry">
-                <td class="title">${entry.title}</td>
-                <td class="username">${entry.storedUsername}</td>
-                <td class="password">${entry.storedPassword}</td>
+                <td class="title align-middle">${entry.title}</td>
+                <td class="username align-middle">${entry.storedUsername}</td>
+                <td class="password align-middle">${entry.storedPassword}</td>
                 <td><button class="delete">Delete</button></td>
             </tr>
         `;
     }
 
-    document.querySelector('#passwords tr').insertAdjacentHTML('afterend', html);
+    document.querySelector('#passwords tbody').innerHTML =  html;
     setupDelete();
 }
 
