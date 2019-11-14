@@ -4,7 +4,8 @@ function superRender(req, res, next) {
             ...locals,
             ...{
                 csrfToken: req.csrfToken(),
-                nonce: res.locals.nonce
+                nonce: res.locals.nonce,
+                isLoggedIn: req.session.loggedin
             }
         }
 
