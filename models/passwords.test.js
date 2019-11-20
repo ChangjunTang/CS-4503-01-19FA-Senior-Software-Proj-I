@@ -11,11 +11,29 @@ const firebase = require('firebase');
 //        apiAuth: jest.fn(() => {
 //            return {
 //                firestore: async () => undefined,
-//				collection: async (string) => undefined
+// 				  collection: async (string) => undefined
 //            }
 //        })
 //    }
 //});
+
+
+describe('adding a password', () => {
+    test('adding a password should not throw an error', () => {
+        return passwords.addPassword('test@test.com', 'Testing', 'Tester', 'password');
+    });
+});
+
+describe('getting a password', () => {
+    test('getting a password from a stored user should not throw an error', () => {
+        return passwords.getPassword('test@test.com', 'Testing', 'Tester');
+    });
+    test('getting a password from an unstored user should throw an error', () => {
+        return passwords.getPassword('test@test.com', 'Testing', 'NotTester');
+    });
+});
+
+
 
 describe('getting a user and their passwords', () => {
     test('getting a valid user should not throw an error', () => {
@@ -23,12 +41,16 @@ describe('getting a user and their passwords', () => {
     });
 
 
-//    test('when no user provided, throw an error', () => {
-//        expect.assertions(1);
-//
-//        return passwords.get()
-//            .catch(function (err) {
-//                expect(err).toMatch('Missing Parameter');
-//            });
-//    });
+    test('when no user provided, throw an error', () => {
+        expect.assertions(1);
+
+        return passwords.get()
+            .catch(function (err) {
+                expect(err).toMatch('Missing Parameter');
+            });
+    });
 });
+
+
+
+
