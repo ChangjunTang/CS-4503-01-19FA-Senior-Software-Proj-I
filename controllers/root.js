@@ -12,9 +12,8 @@ router.use(function (err, req, res, next) {
 });
 
 router.get('/', auth, function (req, res) {
-    res.superRender('homepage', {
-        pageTitle: 'Home',
-        username: req.session.username
+    res.superRender('restTest', {
+        pageTitle: `${req.session.username} Passwords`,
     });
 });
 
@@ -29,7 +28,7 @@ router.route('/login')
             .then(function () {
                 req.session.loggedin = true;
                 req.session.username = req.body.username;
-                res.redirect('/restTest');
+                res.redirect('/');
 
             })
             .catch(function () {
