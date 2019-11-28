@@ -7,7 +7,10 @@
 {% endblock %}
 
 {% block main %}
-<input id="search" type="text" class="form-control" placeholder="Search..."></input>
+<div id="actions">
+    <button id='addPasswordButton' type="button" class="btn btn-primary">+</button>
+    <input id="search" type="text" class="form-control" placeholder="Search..."></input>
+</div>
 
 <div>
     <div id="passwords">
@@ -17,6 +20,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Username</th>
                 <th scope="col">Password</th>
+                <th scope="col">Show?</th>
                 <th scope="col">Delete?</th>
                 </tr>
             </thead>
@@ -24,7 +28,6 @@
             </tbody>
         </table>
     </div>
-    <button id='addPasswordButton' type="button" class="btn btn-primary">+</button>
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="addPasswordModal" aria-labelledby="addPasswordModalLabel" aria-hidden="true">

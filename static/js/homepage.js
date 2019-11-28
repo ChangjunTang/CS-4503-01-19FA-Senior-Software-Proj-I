@@ -4,7 +4,6 @@ const JJBPBOT = {};
     namespace.main = function () {
         fetchPasswords();
         setupSearch();
-        setupDelete();
         setupPasswordInputForm();
         setupModal();
     }
@@ -51,14 +50,16 @@ const JJBPBOT = {};
                 <tr class="entry">
                     <td class="title align-middle">${entry.title}</td>
                     <td class="username align-middle">${entry.storedUsername}</td>
-                    <td class="password align-middle">${entry.storedPassword}</td>
-                    <td><button class="delete">Delete</button></td>
+                    <td class="password align-middle hide">${entry.storedPassword}</td>
+                    <td><button class="showBtn tableBtn">Show</button></td>
+                    <td><button class="delete tableBtn">Delete</button></td>
                 </tr>
             `;
         }
 
         document.querySelector('#passwords tbody').innerHTML = html;
         setupDelete();
+        setupHide();
     }
 
     function setupDelete() {
@@ -69,6 +70,17 @@ const JJBPBOT = {};
                 const username = entry.querySelector('.username').innerHTML;
                 await deleteEntry(title, username);
                 fetchPasswords();
+            });
+        }
+    }
+
+    function setupHide() {
+        for (let entry of document.querySelectorAll('.entry')) {
+            const btn = entry.querySelector('.showBtn');
+            btn.addEventListener('click', function (e) {
+                const password = entry.querySelector('.password');
+                console.log(password);
+                password.classList.toggle('hide');
             });
         }
     }

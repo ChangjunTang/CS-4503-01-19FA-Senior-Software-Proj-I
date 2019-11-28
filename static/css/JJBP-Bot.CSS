@@ -124,6 +124,35 @@ span.psw {
 }
 
 #addPasswordButton {
-  float: left;
+  margin-right: 15px;
   width: 75px;
+}
+
+.hide {
+  opacity: 0.0;
+}
+
+.tableBtn {
+  background:none;
+	box-shadow:none;
+	text-shadow:none;
+	color: #A0A0A0;
+}
+
+.tableBtn:hover {
+  color: #000;
+}
+
+.delete:hover {
+  color: #900000;
+}
+
+#actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: #fff;
 }
