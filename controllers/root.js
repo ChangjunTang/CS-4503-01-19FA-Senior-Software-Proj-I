@@ -12,7 +12,7 @@ router.use(function (err, req, res, next) {
 });
 
 router.get('/', auth, function (req, res) {
-    res.superRender('restTest', {
+    res.superRender('homepage', {
         pageTitle: `${req.session.username} Passwords`,
     });
 });
@@ -52,10 +52,6 @@ router.route('/signup')
             });
     });
 
-router.get('/passwordStorage', function (req, res) {
-    res.superRender('passwordStorage');
-});
-
 router.route('/forgotPass')
     .get(function (req, res) {
         res.superRender('forgotPass', {
@@ -71,14 +67,6 @@ router.route('/forgotPass')
                 res.redirect(`/forgotPass?error=${err}`);
             });
     });
-
-router.get('/restTest', function (req, res) {
-    res.superRender('restTest');
-})
-
-router.get('/generator', function (req, res) {
-    res.superRender('strongPasswordsGenerator');
-});
 
 router.get('/signout', function (req, res) {
     req.session.destroy(() => res.redirect('/login'));

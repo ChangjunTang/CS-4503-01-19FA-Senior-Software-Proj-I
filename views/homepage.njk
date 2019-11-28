@@ -1,45 +1,72 @@
-{% extends "layout.njk" %}
+{% extends "centered_content.njk" %}
 
-{% block content %}
-<center>
-    <h1>Welcome {{ username }}</h1>
+{% block head %}
+{{ super() }}
+<meta name="csrf-token" content="{{ csrfToken }}">
+<script src="/js/homepage.js"></script>
+{% endblock %}
 
-    <form action="/signout" method="get">
-        <p align="right">
-            <button type="submit" class="btn btn-outline-primary">Logout</button>
-        </p>
-    </form>
+{% block main %}
+<div id="actions">
+    <button id='addPasswordButton' type="button" class="btn btn-primary">+</button>
+    <input id="search" type="text" class="form-control" placeholder="Search..."></input>
+</div>
 
-    <div class="container">	
-        <!-- storing form -->
-        <form>
-            <div class="form-group">
-            <label for="exampleInputEmail1">Website/App Name</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Website/App Name">
-            <small id="emailHelp" class="form-text text-muted"></small>
-            </div>
-            <div class="form-group">
-            <label for="exampleInputPassword1">Username/Email</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Username/Email">
-            </div>
-            <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary">Store Information</button>
-        </form>
-
-
-        <!-- search form -->
-        <form>
-            <div class="form-group">
-            <label for="exampleInputEmail1">Website/App Name</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Website/App Name">
-            <small id="emailHelp" class="form-text text-muted"></small>
-            </div>
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-
+<div>
+    <div id="passwords">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Username</th>
+                <th scope="col">Password</th>
+                <th scope="col">Show?</th>
+                <th scope="col">Delete?</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-</center>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="addPasswordModal" aria-labelledby="addPasswordModalLabel" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id='addPasswordModalLabel'>Add a Password</h2>
+        </div>
+        <div class="modal-body">
+            <form id="addPassword">
+                <label>Title:</label>
+                <input id='modalTitle' type="text" name="title" class="form-control"></input>
+                <label>Username:</label>
+                <input id='modalUser' type="text" name="username" class="form-control"></input>
+                <div class="card">
+                    <div class="card-header">Password:</div>
+                    <input id='slider' type="range" value='12' min="6" max="32" step="1" list="steplist" class="custom-range">
+                    <div id='text'>Length: 12
+
+                    </div>
+                    <div>
+                        <input class="form-check-input" id='num' checked type='checkbox'>
+                        Numbers
+                    </div>
+                    <div>
+                        <input class="form-check-input" id='spec' checked type='checkbox'>
+                        Special Characters
+                    </div>
+                    <br>
+                </div>
+                <input id='modalPass' type="text" name="password" class="form-control"></input>
+                <input id='submitModal' type="submit" name="submit" class="btn btn-primary"></input>
+            </form>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
+</div>
+
+<span id="addPasswordError"></span>
+
 {% endblock %}
