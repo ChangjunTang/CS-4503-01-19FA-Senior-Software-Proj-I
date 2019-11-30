@@ -156,3 +156,11 @@ span.psw {
   top: 0;
   background-color: #fff;
 }
+
+.alert {
+  position: fixed;
+  bottom: 0;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}

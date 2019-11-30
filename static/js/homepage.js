@@ -9,6 +9,7 @@ const JJBPBOT = {};
     }
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const alertTimer = null;
 
     function setupSearch() {
         document.querySelector('#search').addEventListener('keyup', function (e) {
@@ -79,7 +80,7 @@ const JJBPBOT = {};
             const btn = entry.querySelector('.showBtn');
             btn.addEventListener('click', function (e) {
                 const password = entry.querySelector('.password');
-                console.log(password);
+                btn.innerHTML = btn.innerHTML === 'Show' ? 'Hide' : 'Show';
                 password.classList.toggle('hide');
             });
         }
@@ -102,6 +103,8 @@ const JJBPBOT = {};
     function setupPasswordInputForm() {
         document.forms[0].submit.addEventListener('click', async function (e) {
             e.preventDefault();
+            clearTimeout(alertTimer);
+            $('.alert') && $('.alert').alert('close');
 
             const body = new URLSearchParams();
             for (let input of document.forms[0].elements) {
@@ -119,10 +122,22 @@ const JJBPBOT = {};
             res = await res.json();
 
             if (res.error) {
-                document.querySelector('#addPasswordError').innerHTML = res.error.message;
+                const alert = `
+                    <div class="alert alert-danger" role="alert">
+                        ${res.error.message}
+                    </div>
+                `;
+                document.querySelector('body').insertAdjacentHTML('beforeend', alert);
+                alertTimer = setTimeout(() => $('.alert').alert('close'), 5000);
             }
             else {
-                document.querySelector('#addPasswordError').innerHTML = "";
+                const alert = `
+                    <div class="alert alert-success" role="alert">
+                        Successfully added password!
+                    </div>
+                `;
+                document.querySelector('body').insertAdjacentHTML('beforeend', alert);
+                alertTimer = setTimeout(() => $('.alert').alert('close'), 5000);
                 fetchPasswords();
             }
         });
