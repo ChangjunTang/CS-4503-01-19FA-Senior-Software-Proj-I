@@ -1,4 +1,5 @@
 const fsRef = require('firebase-admin').firestore().collection('/passwords');
+const encrypt = require('../utilities/encrypt');
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const window = (new JSDOM('')).window;
@@ -20,8 +21,7 @@ async function add(user, title, storedUsername, storedPassword) {
     const snapshot = await getPassword(user, title, storedUsername)
 
     if (snapshot.empty) {
-        // TODO: At bare minimum, the password needs to encrypted
-        // The other fields can be encrypted, but that makes everything more complicated
+        storedPassword = encrypt.encrypt(storedPassword);
         await addPassword(user, title, storedUsername, storedPassword);
     }
     else {
@@ -92,7 +92,7 @@ async function get(user) {
     snapshot.forEach(function (doc) {
         const data = doc.data();
         delete data.user;
-        // TODO: decrypt all of the stuff before sending back to user
+        data.storedPassword = encrypt.decrypt(data.storedPassword);
         passwords.push(data);
     });
 

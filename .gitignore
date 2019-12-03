@@ -96,3 +96,6 @@ public
 
 # Secret key
 serviceAccountKey.json
+
+# Encryption key
+aesKey.json
