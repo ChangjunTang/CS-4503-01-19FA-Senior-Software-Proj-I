@@ -1,6 +1,7 @@
 const express = require('express');
 const auth = require('../middlewares/auth');
 const users = require('../models/users');
+const date = require('../utilities/date');
 const router = express.Router();
 
 router.use(require('csurf')());
@@ -28,6 +29,14 @@ router.route('/login')
             .then(function () {
                 req.session.loggedin = true;
                 req.session.username = req.body.username;
+
+                if (req.body.remember) {
+                    req.session.cookie.expires = date.addMonths(new Date(), 1);
+                }
+                else {
+                    req.session.cookie.maxAge = 300000;
+                }
+
                 res.redirect('/');
 
             })
