@@ -147,8 +147,8 @@ const JJBPBOT = {};
 
     (function (namespace) {
         namespace.prevLen = 12;
-        namespace.nums = $("#num").prop('checked');
-        namespace.specs = $("#spec").prop('checked');
+        namespace.nums = true;
+        namespace.specs = true;
         namespace._pattern = /[a-zA-Z]/;
 
         function getRandomByte() {
