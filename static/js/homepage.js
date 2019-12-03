@@ -131,6 +131,7 @@ const JJBPBOT = {};
                 alertTimer = setTimeout(() => $('.alert').alert('close'), 5000);
             }
             else {
+                await fetchPasswords();
                 const alert = `
                     <div class="alert alert-success" role="alert">
                         Successfully added password!
@@ -138,7 +139,6 @@ const JJBPBOT = {};
                 `;
                 document.querySelector('body').insertAdjacentHTML('beforeend', alert);
                 alertTimer = setTimeout(() => $('.alert').alert('close'), 5000);
-                fetchPasswords();
             }
         });
     }
@@ -287,7 +287,7 @@ const JJBPBOT = {};
 
         // award every unique letter until 5 repetitions
         var letters = new Object();
-        for (var i=0; i<pass.length; i++) {
+        for (var i = 0; i < pass.length; i++) {
             letters[pass[i]] = (letters[pass[i]] || 0) + 1;
             score += 5.0 / letters[pass[i]];
         }
@@ -321,8 +321,8 @@ const JJBPBOT = {};
         return "very weak";
     }
 
-    $(document).ready(function() {
-        $("#modalPass").on("keypress keyup keydown", function() {
+    $(document).ready(function () {
+        $("#modalPass").on("keypress keyup keydown", function () {
             var pass = $(this).val();
             $("#strength_human").text(checkPassStrength(pass));
             $("#strength_score").text(scorePassword(pass));
