@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(require('./middlewares/routeLogger'));
 app.use(require('./middlewares/scriptNonce'));
 app.use(require('helmet')(require('./helmet-config')));
+app.use(require('./middlewares/keepSessionAlive'));
 app.use(express.static('static'));
 app.use(require('./controllers'));
 

@@ -4,10 +4,7 @@ const sessionConfig = {
     name: 'SID',
     resave: false,
     saveUninitialized: true,
-    cookie: {
-        sameSite: true,
-        maxAge: 300000
-    }
+    cookie: { sameSite: true }
 }
 
 module.exports = sessionConfig;
