@@ -164,3 +164,47 @@ span.psw {
   width: 100%;
   text-align: center;
 }
+
+#addPassword input {
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+#addPassword label {
+  float: left;
+  margin: 0;
+  margin-bottom: 3px;
+  margin-left: 3px;
+  font-weight: bold;
+}
+
+#passwordGenerator {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 3px;
+}
+
+#passwordGenerator input {
+  position: relative;
+  margin-left: 5px;
+  margin-right: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  width: initial;
+}
+
+#passwordGenerator #slider {
+  padding-left: 10px;
+  max-width: 75px;
+}
+
+#passwordGenerator label {
+  margin: 0;
+  margin-right: 3px;
+}
+
+#submitModal {
+  margin-top: 20px;
+}

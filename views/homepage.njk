@@ -37,28 +37,23 @@
         </div>
         <div class="modal-body">
             <form id="addPassword">
-                <label>Title:</label>
-                <input id='modalTitle' type="text" name="title" class="form-control"></input>
-                <label>Username:</label>
-                <input id='modalUser' type="text" name="username" class="form-control"></input>
-                <div class="card">
-                    <div class="card-header">Password:</div>
-                    <input id='slider' type="range" value='12' min="6" max="32" step="1" list="steplist" class="custom-range">
-                    <div id='text'>Length: 12
-
-                    </div>
-                    <div>
-                        <input class="form-check-input" id='num' checked type='checkbox'>
-                        Numbers
-                    </div>
-                    <div>
-                        <input class="form-check-input" id='spec' checked type='checkbox'>
-                        Special Characters
-                    </div>
-                    <br>
+                <label>Title</label>
+                <input id='modalTitle' type="text" name="title" class="form-control" placeholder="Title..."></input>
+                <label>Username</label>
+                <input id='modalUser' type="text" name="username" class="form-control" placeholder="Username..."></input>
+                <label>Password</label>
+                <input id='modalPass' type="text" name="password" class="form-control" placeholder="Password..."></input>
+                {# <input id='slider' type="range" value='12' min="6" max="32" step="1" list="steplist" class="custom-range"> #}
+                <div id="passwordGenerator">
+                    {# <div id='text'>Length: 12</div> #}
+                    <label>Length</label>
+                    <input id="slider" type="number" step="1" value="12" min="6" max="32" class="form-control">
+                    <label>Numbers</label>
+                    <input class="form-check-input" id='num' checked type='checkbox'>
+                    <label>Special Characters</label>
+                    <input class="form-check-input" id='spec' checked type='checkbox'>
                 </div>
-                <input id='modalPass' type="text" name="password" class="form-control"></input>
-                <input id='submitModal' type="submit" name="submit" class="btn btn-primary"></input>
+                <input id='submitModal' type="submit" name="submit" class="btn btn-primary" value="Submit"></input>
             </form>
         </div>
         <div class="modal-footer">
