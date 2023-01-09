@@ -28,7 +28,7 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "firebase": "^6.6.2",
-    "firebase-admin": "^8.7.0",
+    "firebase-admin": "^11.4.1",
     "helmet": "^3.21.2",
     "nunjucks": "^3.2.0",
     "uuid": "^3.3.3"
